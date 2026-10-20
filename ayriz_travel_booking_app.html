@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYRIZ Travel - International Tours & Umroh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#F5E6A3',
+                            DEFAULT: '#D4AF37',
+                            dark: '#AA820A',
+                            darker: '#785A00',
+                        },
+                        dark: {
+                            800: '#18181b',
+                            900: '#121214',
+                            950: '#0a0a0a',
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+        }
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 35%, #B38728 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(20, 20, 22, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+        .card-gold-hover {
+            transition: all 0.3s ease;
+        }
+        .card-gold-hover:hover {
+            border-color: #D4AF37;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-e-ticket, #printable-e-ticket * {
+                visibility: visible;
+            }
+            #printable-e-ticket {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark-950 text-gray-100 font-sans custom-scrollbar min-h-screen flex flex-col selection:bg-gold selection:text-black">
+
+    <script>
+        const LOGO_IMG = "WhatsApp Image 2026-10-20 at 18.58.45.jpeg";
+        const LOGO_FALLBACK = "https://placehold.co/200x200/0a0a0a/D4AF37?text=AYRIZ+TRAVEL";
+    </script>
+
+    <!-- HEADER / NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-gold/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo & Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateToStep(1)">
+                    <img src="WhatsApp Image 2026-10-20 at 18.58.45.jpeg" 
+                         onerror="this.src=LOGO_FALLBACK" 
+                         alt="AYRIZ Travel Logo" 
+                         class="h-12 w-12 object-cover rounded-full border-2 border-gold shadow-lg shadow-gold/20">
+                    <div>
+                        <span class="font-cinzel text-xl sm:text-2xl font-bold tracking-wider gold-text-gradient block">AYRIZ TRAVEL</span>
+                        <span class="text-[9px] tracking-widest text-gold/80 uppercase block -mt-1 font-semibold">International Tours & Umroh</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Bar -->
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                    <button onclick="navigateToPage('booking')" class="text-gold hover:text-gold-light transition flex items-center gap-2">
+                        <i class="fa-solid fa-compass"></i> Pemesanan Tiket
+                    </button>
+                    <button onclick="navigateToPage('my-orders')" class="text-gray-300 hover:text-gold transition flex items-center gap-2">
+                        <i class="fa-solid fa-receipt"></i> Struk & Tiket Saya
+                    </button>
+                    <button id="nav-admin-btn" onclick="openLoginModal('admin')" class="hidden text-gray-300 hover:text-gold transition flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-gold"></i> Admin Dashboard
+                    </button>
+                </nav>
+
+                <!-- Profile Badge & Role Switcher -->
+                <div class="flex items-center space-x-3">
+                    <div id="user-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-dark-900 border border-gold/40 text-xs">
+                        <i class="fa-solid fa-user-circle text-gold text-sm"></i>
+                        <span id="user-role-text" class="font-semibold text-gold">Pengguna</span>
+                    </div>
+                    <button onclick="openLoginModal()" class="px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-black gold-gradient-bg hover:brightness-110 transition rounded-lg shadow-md flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-to-bracket"></i> Switch Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= SECTION 1: BOOKING WIZARD ================= -->
+        <section id="section-booking-wizard" class="space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-2xl overflow-hidden border border-gold/30 bg-dark-900 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+                <div class="max-w-2xl z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-crown"></i> Premium Luxury Travel
+                    </div>
+                    <h1 class="font-cinzel text-2xl md:text-4xl font-bold text-white leading-tight">
+                        Wujudkan Perjalanan Impian Bersama <span class="gold-text-gradient">AYRIZ Travel</span>
+                    </h1>
+                    <p class="text-gray-400 text-xs md:text-sm mt-2 leading-relaxed">
+                        Layanan eksklusif perjalanan Wisata Mancanegara, Antar Pulau / Domestik, Paket Umroh, Penerbangan Pesawat VIP, dan Bus Eksekutif dengan kenyamanan berstandar internasional.
+                    </p>
+                </div>
+                <div class="z-10 flex-shrink-0">
+                    <img src="WhatsApp Image 2026-10-20 at 18.58.45.jpeg" onerror="this.src=LOGO_FALLBACK" class="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full border-2 border-gold shadow-2xl shadow-gold/30">
+                </div>
+            </div>
+
+            <!-- STEP PROGRESS BAR (3 HALAMAN) -->
+            <div class="glass-panel p-4 rounded-xl border border-gold/30">
+                <div class="grid grid-cols-3 gap-2 md:gap-4 text-center text-xs md:text-sm">
+                    <!-- Step 1 Indicator -->
+                    <div id="step-indicator-1" onclick="navigateToStep(1)" class="cursor-pointer p-3 rounded-lg border transition flex flex-col md:flex-row items-center justify-center gap-2 border-gold bg-gold/10 text-gold font-bold">
+                        <span class="w-6 h-6 rounded-full bg-gold text-black flex items-center justify-center text-xs font-black">1</span>
+                        <span>1. Pemilihan Tujuan Travel</span>
+                    </div>
+
+                    <!-- Step 2 Indicator -->
+                    <div id="step-indicator-2" onclick="navigateToStep(2)" class="cursor-pointer p-3 rounded-lg border transition flex flex-col md:flex-row items-center justify-center gap-2 border-gold/20 text-gray-400 opacity-60">
+                        <span class="w-6 h-6 rounded-full bg-dark-800 border border-gold/40 flex items-center justify-center text-xs font-bold text-gold">2</span>
+                        <span>2. Tanggal, Passenger & Biodata</span>
+                    </div>
+
+                    <!-- Step 3 Indicator -->
+                    <div id="step-indicator-3" onclick="navigateToStep(3)" class="cursor-pointer p-3 rounded-lg border transition flex flex-col md:flex-row items-center justify-center gap-2 border-gold/20 text-gray-400 opacity-60">
+                        <span class="w-6 h-6 rounded-full bg-dark-800 border border-gold/40 flex items-center justify-center text-xs font-bold text-gold">3</span>
+                        <span>3. Pembayaran & Struk E-Tiket</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= HALAMAN 1: PEMILIHAN TUJUAN TRAVEL & TRANSPORTASI ================= -->
+            <div id="booking-page-1" class="space-y-8">
+                
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-3 border-b border-gold/20 pb-4">
+                    <button onclick="filterCategory('all')" class="cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold bg-gold text-black transition" data-category="all">
+                        <i class="fa-solid fa-border-all mr-1"></i> Semua Destinasi
+                    </button>
+                    <button onclick="filterCategory('Mancanegara')" class="cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold/30 bg-dark-900 text-gray-300 hover:text-gold transition" data-category="Mancanegara">
+                        <i class="fa-solid fa-earth-americas text-gold mr-1"></i> Mancanegara
+                    </button>
+                    <button onclick="filterCategory('Domestik')" class="cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold/30 bg-dark-900 text-gray-300 hover:text-gold transition" data-category="Domestik">
+                        <i class="fa-solid fa-umbrella-beach text-gold mr-1"></i> Antar Pulau / Domestik
+                    </button>
+                    <button onclick="filterCategory('Umroh')" class="cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold/30 bg-dark-900 text-gray-300 hover:text-gold transition" data-category="Umroh">
+                        <i class="fa-solid fa-kaaba text-gold mr-1"></i> Paket Umroh
+                    </button>
+                </div>
+
+                <!-- Destination Cards Grid with Photos -->
+                <div>
+                    <h2 class="font-cinzel text-xl font-bold text-gold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot"></i> Pilih Destinasi Wisata Impian Anda
+                    </h2>
+                    <div id="destinations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- Dynamic Cards Rendered from JS -->
+                    </div>
+                </div>
+
+                <!-- Transport Choice Options -->
+                <div class="glass-panel p-6 rounded-2xl border border-gold/30 space-y-4">
+                    <h3 class="font-cinzel text-lg font-bold text-gold flex items-center gap-2">
+                        <i class="fa-solid fa-plane-up"></i> Pilih Jenis Transportasi Keberangkatan
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="transport-option border-2 border-gold bg-gold/10 rounded-xl p-4 flex items-center justify-between cursor-pointer transition">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="transport_type" value="Pesawat Udara" checked onchange="updateTransportSelection()" class="accent-gold h-4 w-4">
+                                <div>
+                                    <span class="font-bold text-white text-sm block">Pesawat Udara (Penerbangan Premium)</span>
+                                    <span class="text-xs text-gray-400">Maskapai Bintang 5, Bagasi 30kg, In-flight Meals</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-plane text-2xl text-gold"></i>
+                        </label>
+
+                        <label class="transport-option border-2 border-gold/30 bg-dark-900 rounded-xl p-4 flex items-center justify-between cursor-pointer transition">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="transport_type" value="Bus Eksekutif / VIP" onchange="updateTransportSelection()" class="accent-gold h-4 w-4">
+                                <div>
+                                    <span class="font-bold text-white text-sm block">Bus Eksekutif / VIP Sleeper</span>
+                                    <span class="text-xs text-gray-400">Sleeper Seat, Full AC, Reclining Seat, Wifi</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-bus text-2xl text-gold"></i>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Selected Destination Summary Bar & Next Button -->
+                <div class="glass-panel p-5 rounded-xl border border-gold/40 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 z-30 shadow-2xl">
+                    <div>
+                        <span class="text-xs text-gray-400 block uppercase">Destinasi Terpilih:</span>
+                        <div class="flex items-center gap-2">
+                            <span id="selected-dest-name" class="font-bold text-gold text-lg">Pilih salah satu destinasi di atas</span>
+                            <span id="selected-dest-price" class="text-sm font-semibold text-gray-300"></span>
+                        </div>
+                    </div>
+                    <button onclick="goToPage2()" class="w-full sm:w-auto px-8 py-3.5 gold-gradient-bg text-black font-bold uppercase text-xs tracking-wider rounded-xl hover:brightness-110 transition shadow-lg shadow-gold/20 flex items-center justify-center gap-2">
+                        Lanjut ke Jumlah & Biodata Penumpang <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- ================= HALAMAN 2: TANGGAL, JUMLAH PENUMPANG & BIODATA DIRI ================= -->
+            <div id="booking-page-2" class="hidden space-y-8">
+                
+                <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-gold/30 space-y-6">
+                    <h2 class="font-cinzel text-xl md:text-2xl font-bold text-gold border-b border-gold/20 pb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-calendar-days"></i> Halaman 2: Tanggal, Jumlah Penumpang & Biodata Diri
+                    </h2>
+
+                    <!-- Form Inputs Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Tanggal Keberangkatan -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gold mb-2">Tanggal Keberangkatan *</label>
+                            <input type="date" id="input-date-dept" required class="w-full bg-dark-900 border border-gold/40 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold">
+                        </div>
+
+                        <!-- Tanggal Kepulangan -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gold mb-2">Tanggal Kepulangan *</label>
+                            <input type="date" id="input-date-return" required class="w-full bg-dark-900 border border-gold/40 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold">
+                        </div>
+
+                        <!-- Jumlah Penumpang -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gold mb-2">Jumlah Penumpang (Orang) *</label>
+                            <div class="flex items-center gap-4">
+                                <input type="number" id="input-passengers-count" min="1" max="30" value="1" onchange="renderPassengerInputs()" class="w-32 bg-dark-900 border border-gold/40 rounded-lg px-4 py-3 text-white text-center font-bold text-lg focus:outline-none focus:border-gold">
+                                <span class="text-xs text-gray-400">Rincian biodata penumpang akan disesuaikan secara otomatis berdasarkan jumlah ini.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Passenger Biodata Form Fields -->
+                    <div class="border-t border-gold/20 pt-6 space-y-6">
+                        <h3 class="font-cinzel text-lg font-bold text-gold flex items-center gap-2">
+                            <i class="fa-solid fa-address-card"></i> Data Biodata Penumpang & Kontak Pemesan
+                        </h3>
+
+                        <div id="passengers-forms-container" class="space-y-6">
+                            <!-- Dynamic Passenger Inputs generated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Action Buttons -->
+                    <div class="border-t border-gold/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button onclick="navigateToStep(1)" class="w-full sm:w-auto px-6 py-3 border border-gold/40 text-gray-300 hover:text-gold hover:border-gold rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Pemilihan Destinasi
+                        </button>
+                        <button onclick="goToPage3()" class="w-full sm:w-auto px-8 py-3.5 gold-gradient-bg text-black font-bold uppercase text-xs tracking-wider rounded-xl hover:brightness-110 transition shadow-lg shadow-gold/20 flex items-center justify-center gap-2">
+                            Lanjut ke Metode Pembayaran <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= HALAMAN 3: METODE PEMBAYARAN & STRUK PEMESANAN ================= -->
+            <div id="booking-page-3" class="hidden space-y-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Left Column: Payment Options & Form -->
+                    <div class="lg:col-span-2 glass-panel p-6 sm:p-8 rounded-2xl border border-gold/30 space-y-6">
+                        <h2 class="font-cinzel text-xl font-bold text-gold border-b border-gold/20 pb-4 flex items-center gap-3">
+                            <i class="fa-solid fa-credit-card"></i> Halaman 3: Pilih Metode Pembayaran
+                        </h2>
+
+                        <div class="space-y-4">
+                            <!-- Option 1: Transfer Bank -->
+                            <label class="border border-gold/40 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-gold bg-dark-900 transition">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_method" value="Transfer Bank BCA/Mandiri/BRI" checked class="accent-gold h-4 w-4">
+                                    <div>
+                                        <span class="font-bold text-white text-sm block">Transfer Bank Direct (BCA / Mandiri / BRI)</span>
+                                        <span class="text-xs text-gray-400">Verifikasi otomatis & konfirmasi instant</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-gold border border-gold/30 px-2 py-1 rounded">ATM / M-Banking</span>
+                            </label>
+
+                            <!-- Option 2: E-Wallet / QRIS -->
+                            <label class="border border-gold/40 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-gold bg-dark-900 transition">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_method" value="E-Wallet QRIS (GoPay/OVO/Dana)" class="accent-gold h-4 w-4">
+                                    <div>
+                                        <span class="font-bold text-white text-sm block">QRIS & E-Wallet (GoPay, OVO, ShopeePay, Dana)</span>
+                                        <span class="text-xs text-gray-400">Scan QR Code instan dari aplikasi e-wallet Anda</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-gold border border-gold/30 px-2 py-1 rounded">QRIS Instant</span>
+                            </label>
+
+                            <!-- Option 3: Credit Card -->
+                            <label class="border border-gold/40 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-gold bg-dark-900 transition">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_method" value="Kartu Kredit / Debit Visa Mastercard" class="accent-gold h-4 w-4">
+                                    <div>
+                                        <span class="font-bold text-white text-sm block">Kartu Kredit / Debit (Visa / Mastercard)</span>
+                                        <span class="text-xs text-gray-400">Enkripsi keamanan 3D Secure 256-bit</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-gold border border-gold/30 px-2 py-1 rounded">Visa / MC</span>
+                            </label>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="border-t border-gold/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <button onclick="navigateToStep(2)" class="w-full sm:w-auto px-6 py-3 border border-gold/40 text-gray-300 hover:text-gold hover:border-gold rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-left"></i> Kembali ke Biodata
+                            </button>
+                            <button onclick="processFinalPayment()" class="w-full sm:w-auto px-8 py-4 gold-gradient-bg text-black font-bold uppercase text-xs tracking-wider rounded-xl hover:brightness-110 transition shadow-xl shadow-gold/20 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-lock"></i> Bayar Sekarang & Dapatkan Struk Tiket
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Final Summary Order Card -->
+                    <div class="glass-panel p-6 rounded-2xl border border-gold/40 space-y-5 h-fit">
+                        <h3 class="font-cinzel text-lg font-bold text-gold border-b border-gold/20 pb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Ringkasan Pemesanan
+                        </h3>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between border-b border-gold/10 pb-2">
+                                <span class="text-gray-400">Destinasi:</span>
+                                <span id="summary-dest-name" class="font-bold text-white text-right"></span>
+                            </div>
+                            <div class="flex justify-between border-b border-gold/10 pb-2">
+                                <span class="text-gray-400">Transportasi:</span>
+                                <span id="summary-transport" class="font-semibold text-gold text-right"></span>
+                            </div>
+                            <div class="flex justify-between border-b border-gold/10 pb-2">
+                                <span class="text-gray-400">Jadwal Perjalanan:</span>
+                                <span id="summary-dates" class="font-semibold text-white text-right"></span>
+                            </div>
+                            <div class="flex justify-between border-b border-gold/10 pb-2">
+                                <span class="text-gray-400">Jumlah Penumpang:</span>
+                                <span id="summary-passengers-qty" class="font-bold text-gold text-right"></span>
+                            </div>
+                            <div class="flex justify-between border-b border-gold/10 pb-2">
+                                <span class="text-gray-400">Kontak Utama:</span>
+                                <span id="summary-main-contact" class="font-semibold text-white text-right"></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-dark-900 border border-gold/30 p-4 rounded-xl space-y-1 text-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest block">Total Pembayaran</span>
+                            <span id="summary-total-price" class="font-cinzel text-2xl font-bold gold-text-gradient block">Rp 0</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 2: STRUK & TIKET SAYA (USER ORDERS) ================= -->
+        <section id="section-my-orders" class="hidden space-y-6">
+            <h2 class="font-cinzel text-2xl font-bold text-gold border-b border-gold/20 pb-3 flex items-center gap-3">
+                <i class="fa-solid fa-receipt"></i> Struk Pemesanan & E-Tiket Saya
+            </h2>
+            <div id="orders-cards-list" class="grid grid-cols-1 gap-6">
+                <!-- Order cards rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: ADMIN DASHBOARD ================= -->
+        <section id="section-admin" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gold/20 pb-4">
+                <div>
+                    <h2 class="font-cinzel text-2xl font-bold text-gold flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield"></i> Dashboard Management Admin
+                    </h2>
+                    <p class="text-xs text-gray-400">Pantau seluruh data reservasi pelanggan AYRIZ Travel secara real-time</p>
+                </div>
+                <span class="px-3 py-1 bg-gold/10 border border-gold/40 text-gold text-xs font-bold rounded-full">
+                    Authenticated Admin Mode
+                </span>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-panel p-5 rounded-xl border border-gold/30">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Pemesanan</span>
+                    <p id="stat-admin-orders" class="text-2xl font-bold text-gold mt-1">0</p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-gold/30">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Penumpang</span>
+                    <p id="stat-admin-passengers" class="text-2xl font-bold text-gold mt-1">0</p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-gold/30">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Pendapatan</span>
+                    <p id="stat-admin-revenue" class="text-2xl font-bold gold-text-gradient mt-1">Rp 0</p>
+                </div>
+            </div>
+
+            <!-- Booking Data Table -->
+            <div class="glass-panel rounded-2xl border border-gold/30 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-gold/10 text-gold uppercase text-[10px] tracking-wider border-b border-gold/30">
+                            <tr>
+                                <th class="p-4">Kode Booking</th>
+                                <th class="p-4">Pemesan Utama</th>
+                                <th class="p-4">Destinasi & Transport</th>
+                                <th class="p-4">Jadwal Keberangkatan</th>
+                                <th class="p-4">Penumpang</th>
+                                <th class="p-4">Total Biaya</th>
+                                <th class="p-4">Status</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-tbody" class="divide-y divide-gold/10">
+                            <!-- Dynamic Admin Order Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-gold/30 glass-panel py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+                <img src="WhatsApp Image 2026-10-20 at 18.58.45.jpeg" onerror="this.src=LOGO_FALLBACK" class="h-10 w-10 rounded-full border border-gold object-cover">
+                <div>
+                    <span class="font-cinzel text-lg font-bold text-gold block">AYRIZ TRAVEL</span>
+                    <span class="text-xs text-gray-400">International Tours, Umroh & Travel Solution</span>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500">© 2026 AYRIZ Travel. Hak Cipta Dilindungi Undang-Undang.</p>
+        </div>
+    </footer>
+
+    <!-- PORTAL LOGIN / ROLE SELECTOR MODAL -->
+    <div id="login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-dark-900 border-2 border-gold rounded-2xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl shadow-gold/20">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gold">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <!-- Header with Logo -->
+            <div class="text-center mb-6">
+                <img src="WhatsApp Image 2026-10-20 at 18.58.45.jpeg" onerror="this.src=LOGO_FALLBACK" class="w-20 h-20 mx-auto rounded-full border-2 border-gold mb-3 shadow-lg shadow-gold/30 object-cover">
+                <h3 class="font-cinzel text-2xl font-bold gold-text-gradient">Portal Masuk AYRIZ</h3>
+                <p class="text-xs text-gray-400 mt-1">Pilih peran akun Anda untuk melanjutkan</p>
+            </div>
+
+            <!-- Role Selector Tabs -->
+            <div class="flex rounded-lg bg-dark-800 p-1 mb-6 border border-gold/30">
+                <button type="button" onclick="switchModalRole('user')" id="role-tab-user" class="flex-1 py-2 text-xs font-bold rounded-md transition text-black gold-gradient-bg">Pengguna / User</button>
+                <button type="button" onclick="switchModalRole('admin')" id="role-tab-admin" class="flex-1 py-2 text-xs font-bold rounded-md transition text-gray-400">Administrator</button>
+            </div>
+
+            <!-- User Mode Form (No Password) -->
+            <div id="modal-form-user" class="space-y-4">
+                <div class="text-xs text-gray-300 text-center bg-gold/10 p-3.5 rounded-lg border border-gold/20">
+                    Akses langsung tanpa password sebagai Pengguna untuk mencari dan memesan tiket wisata.
+                </div>
+                <button onclick="loginAsUser()" class="w-full py-3.5 gold-gradient-bg text-black font-bold uppercase text-xs tracking-wider rounded-lg shadow-md hover:brightness-110 transition">
+                    Masuk Sebagai Pengguna
+                </button>
+            </div>
+
+            <!-- Admin Mode Form (Password Input - No Password Text Hint Displayed) -->
+            <div id="modal-form-admin" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gold mb-1">Kata Sandi Administrator</label>
+                    <input type="password" id="admin-pass-field" placeholder="Masukkan kata sandi admin" class="w-full bg-dark-800 border border-gold/40 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-gold">
+                </div>
+                <div id="admin-pass-error" class="hidden text-red-400 text-xs bg-red-950/50 p-2.5 rounded border border-red-500/40">
+                    Kata sandi salah! Silakan coba lagi.
+                </div>
+                <button onclick="loginAsAdmin()" class="w-full py-3.5 gold-gradient-bg text-black font-bold uppercase text-xs tracking-wider rounded-lg shadow-md hover:brightness-110 transition">
+                    Masuk Dashboard Admin
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRINTABLE E-TICKET / STRUK BUKTI PEMESANAN MODAL -->
+    <div id="e-ticket-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white text-black rounded-2xl max-w-xl w-full p-6 sm:p-8 relative shadow-2xl my-8">
+            <button onclick="closeETicketModal()" class="absolute top-4 right-4 text-gray-600 hover:text-black print:hidden">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+
+            <!-- Printable Receipt Area -->
+            <div id="printable-e-ticket" class="space-y-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between border-b-2 border-black pb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="WhatsApp Image 2026-10-20 at 18.58.45.jpeg" onerror="this.src=LOGO_FALLBACK" class="h-14 w-14 rounded-full border-2 border-black object-cover">
+                        <div>
+                            <h2 class="font-cinzel text-xl font-bold tracking-wider text-black">AYRIZ TRAVEL</h2>
+                            <p class="text-[10px] text-gray-700 uppercase font-bold">E-Ticket & Bukti Pembayaran Resmi</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-gray-500 block">Kode Booking</span>
+                        <span id="ticket-code-display" class="font-mono font-bold text-lg text-black">AYR-0000</span>
+                    </div>
+                </div>
+
+                <!-- Flight / Travel Details -->
+                <div class="bg-gray-100 p-4 rounded-xl space-y-2 text-xs">
+                    <div class="flex justify-between font-bold border-b border-gray-300 pb-2">
+                        <span id="ticket-dest-display" class="text-sm"></span>
+                        <span id="ticket-category-badge" class="bg-black text-white px-2 py-0.5 rounded text-[10px] uppercase"></span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1 text-gray-800">
+                        <div><strong>Transportasi:</strong> <span id="ticket-transport-display"></span></div>
+                        <div><strong>Keberangkatan:</strong> <span id="ticket-dept-date"></span></div>
+                        <div><strong>Kepulangan:</strong> <span id="ticket-return-date"></span></div>
+                        <div><strong>Status:</strong> <span class="text-green-700 font-bold uppercase">LUNAS / CONFIRMED</span></div>
+                    </div>
+                </div>
+
+                <!-- Passenger Details List -->
+                <div class="border-t border-b border-gray-300 py-3 text-xs">
+                    <span class="font-bold text-gray-700 uppercase text-[10px] block mb-2">Daftar Penumpang:</span>
+                    <ol id="ticket-passengers-list" class="list-decimal list-inside space-y-1 font-semibold">
+                        <!-- Dynamic list -->
+                    </ol>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="flex justify-between items-center text-xs pt-1">
+                    <div>
+                        <span class="text-gray-500 block">Metode Pembayaran:</span>
+                        <span id="ticket-payment-method" class="font-bold"></span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-gray-500 block">Total Biaya Pemesanan:</span>
+                        <span id="ticket-total-price" class="text-lg font-bold text-black"></span>
+                    </div>
+                </div>
+
+                <!-- Barcode & Verifier -->
+                <div class="border-t border-dashed border-gray-400 pt-4 flex items-center justify-between text-[10px]">
+                    <div>
+                        <p class="text-gray-600">Simpan E-Tiket ini saat check-in keberangkatan.</p>
+                        <p class="text-gray-400">Diterbitkan oleh Sistem AYRIZ Travel.</p>
+                    </div>
+                    <div class="text-center font-mono font-bold">
+                        <div class="text-base tracking-widest">||| |||| |||||| |||||</div>
+                        <span>VERIFIED BOARDING PASS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex gap-4 print:hidden">
+                <button onclick="window.print()" class="flex-1 py-3 bg-black text-white font-bold text-xs uppercase rounded-lg hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i> Cetak Struk / Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // DESTINATION DATA WITH HIGH QUALITY UNSPLASH PHOTOS
+        const DESTINATION_ITEMS = [
+            // Mancanegara
+            {
+                id: 'm1',
+                category: 'Mancanegara',
+                title: 'Tokyo & Kyoto Cherry Blossom',
+                duration: '7 Hari 6 Malam',
+                price: 24500000,
+                image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
+                description: 'Nikmati keindahan bunga Sakura, Gunung Fuji, Shibuya Crossing, dan kebudayaan Kyoto.'
+            },
+            {
+                id: 'm2',
+                category: 'Mancanegara',
+                title: 'Paris & Swiss Alps Luxury',
+                duration: '9 Hari 8 Malam',
+                price: 38500000,
+                image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+                description: 'Menara Eiffel, Museum Louvre, serta keindahan puncak gunung es Jungfraujoch Swiss.'
+            },
+            {
+                id: 'm3',
+                category: 'Mancanegara',
+                title: 'Istanbul & Cappadocia Turkey',
+                duration: '8 Hari 7 Malam',
+                price: 19800000,
+                image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80',
+                description: 'Hagia Sophia, Blue Mosque, dan naik balon udara impian di atas panorama Cappadocia.'
+            },
+            {
+                id: 'm4',
+                category: 'Mancanegara',
+                title: 'Seoul & Nami Island Korea',
+                duration: '6 Hari 5 Malam',
+                price: 16800000,
+                image: 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=800&q=80',
+                description: 'Istana Gyeongbokgung, wisata belanja Myeongdong, dan pesona Pulau Nami.'
+            },
+
+            // Antar Pulau / Domestik
+            {
+                id: 'd1',
+                category: 'Domestik',
+                title: 'Raja Ampat Phinisi Excursion',
+                duration: '5 Hari 4 Malam',
+                price: 15500000,
+                image: 'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=800&q=80',
+                description: 'Surga bawah laut kepulauan Pianemo, Wayag, dan pelayaran kapal Phinisi mewah.'
+            },
+            {
+                id: 'd2',
+                category: 'Domestik',
+                title: 'Bali Villa & Nusa Penida VIP',
+                duration: '4 Hari 3 Malam',
+                price: 5800000,
+                image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+                description: 'Private villa dengan kolam renang, Kelingking Beach Nusa Penida, & sunset dinner Kuta.'
+            },
+            {
+                id: 'd3',
+                category: 'Domestik',
+                title: 'Labuan Bajo Komodo Dragon',
+                duration: '4 Hari 3 Malam',
+                price: 9200000,
+                image: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80',
+                description: 'Trekking Pulau Padar, Pink Beach, dan melihat Taman Nasional Komodo secara langsung.'
+            },
+            {
+                id: 'd4',
+                category: 'Domestik',
+                title: 'Yogyakarta Heritage & Borobudur',
+                duration: '3 Hari 2 Malam',
+                price: 2900000,
+                image: 'https://images.unsplash.com/photo-1584810359583-96fc3448beaa?auto=format&fit=crop&w=800&q=80',
+                description: 'Candi Borobudur VIP access, Candi Prambanan, Lava Tour Merapi, dan Malioboro.'
+            },
+
+            // Umroh
+            {
+                id: 'u1',
+                category: 'Umroh',
+                title: 'Umroh Bintang 5 VIP Reguler',
+                duration: '9 Hari',
+                price: 36500000,
+                image: 'https://images.unsplash.com/photo-1565552070098-0073a886519c?auto=format&fit=crop&w=800&q=80',
+                description: 'Hotel pelataran Masjidil Haram & Nabawi, Bimbingan ibadah terpercaya, Penerbangan Direct.'
+            },
+            {
+                id: 'u2',
+                category: 'Umroh',
+                title: 'Umroh Plus Turkey & Al Aqsha',
+                duration: '12 Hari',
+                price: 48000000,
+                image: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80',
+                description: 'Ibadah Umroh di Tanah Suci dikombinasikan dengan city tour wisata sejarah Istanbul Turkey.'
+            }
+        ];
+
+        // APP STATE
+        let currentRole = 'user'; // 'user' or 'admin'
+        let selectedDestination = DESTINATION_ITEMS[0];
+        let selectedTransport = 'Pesawat Udara';
+        let currentStep = 1;
+
+        // LOCALSTORAGE PERSISTED ORDERS
+        let orders = JSON.parse(localStorage.getItem('ayriz_orders_data')) || [
+            {
+                id: 'AYR-90812',
+                destination: 'Tokyo & Kyoto Cherry Blossom',
+                category: 'Mancanegara',
+                transport: 'Pesawat Udara',
+                deptDate: '2026-11-10',
+                returnDate: '2026-11-17',
+                passengersCount: 2,
+                passengersList: [
+                    { name: 'Budi Santoso', phone: '08123456789', ktp: '317101230001', address: 'Jakarta Selatan' },
+                    { name: 'Siti Rahma', phone: '08123456780', ktp: '317101230002', address: 'Jakarta Selatan' }
+                ],
+                totalPrice: 49000000,
+                paymentMethod: 'Transfer Bank BCA/Mandiri/BRI',
+                status: 'Confirmed'
+            }
+        ];
+
+        // INITIALIZATION
+        window.onload = function() {
+            renderDestinationsGrid('all');
+            renderPassengerInputs();
+            updateSummaryData();
+            renderOrdersCards();
+            renderAdminDashboard();
+            updateRoleUI();
+        };
+
+        // RENDER DESTINATION CARDS
+        function renderDestinationsGrid(categoryFilter) {
+            const container = document.getElementById('destinations-grid');
+            container.innerHTML = '';
+
+            const filteredItems = categoryFilter === 'all' 
+                ? DESTINATION_ITEMS 
+                : DESTINATION_ITEMS.filter(item => item.category === categoryFilter);
+
+            filteredItems.forEach(item => {
+                const isSelected = selectedDestination.id === item.id;
+                const card = document.createElement('div');
+                card.className = `glass-panel rounded-xl overflow-hidden border ${isSelected ? 'border-gold ring-2 ring-gold/50' : 'border-gold/30'} card-gold-hover cursor-pointer flex flex-col`;
+                card.onclick = () => selectDestinationItem(item);
+
+                card.innerHTML = `
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <span class="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-gold text-[10px] font-bold uppercase px-2.5 py-1 rounded border border-gold/30">
+                            ${item.category}
+                        </span>
+                        <span class="absolute bottom-3 right-3 bg-gold text-black text-xs font-bold px-2.5 py-1 rounded shadow">
+                            <i class="fa-solid fa-clock"></i> ${item.duration}
+                        </span>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between space-y-3">
+                        <div>
+                            <h3 class="font-bold text-white text-base leading-snug">${item.title}</h3>
+                            <p class="text-xs text-gray-400 mt-1 line-clamp-2">${item.description}</p>
+                        </div>
+                        <div class="pt-2 border-t border-gold/10 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-gray-400 block uppercase">Mulai Dari</span>
+                                <span class="font-bold text-gold text-sm">Rp ${item.price.toLocaleString('id-ID')} / pax</span>
+                            </div>
+                            <button class="px-3 py-1.5 text-xs font-bold rounded ${isSelected ? 'bg-gold text-black' : 'border border-gold/40 text-gold hover:bg-gold hover:text-black'} transition">
+                                ${isSelected ? 'Terpilih <i class="fa-solid fa-check"></i>' : 'Pilih'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // FILTER CATEGORY BUTTONS
+        function filterCategory(category) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.className = "cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold bg-gold text-black transition";
+                } else {
+                    btn.className = "cat-filter-btn px-4 py-2 text-xs font-bold uppercase rounded-lg border border-gold/30 bg-dark-900 text-gray-300 hover:text-gold transition";
+                }
+            });
+            renderDestinationsGrid(category);
+        }
+
+        // SELECT A DESTINATION ITEM
+        function selectDestinationItem(item) {
+            selectedDestination = item;
+            renderDestinationsGrid(document.querySelector('.cat-filter-btn.bg-gold').dataset.category);
+            
+            document.getElementById('selected-dest-name').textContent = item.title;
+            document.getElementById('selected-dest-price').textContent = `(Rp ${item.price.toLocaleString('id-ID')} / orang)`;
+            updateSummaryData();
+        }
+
+        // UPDATE TRANSPORT CHOICE
+        function updateTransportSelection() {
+            const selected = document.querySelector('input[name="transport_type"]:checked');
+            if (selected) {
+                selectedTransport = selected.value;
+                updateSummaryData();
+            }
+        }
+
+        // RENDER DYNAMIC PASSENGER INPUT FIELDS
+        function renderPassengerInputs() {
+            const count = parseInt(document.getElementById('input-passengers-count').value) || 1;
+            const container = document.getElementById('passengers-forms-container');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= count; i++) {
+                const card = document.createElement('div');
+                card.className = "bg-dark-900 p-5 rounded-xl border border-gold/30 space-y-4";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-gold/20 pb-2">
+                        <span class="font-bold text-xs uppercase text-gold">Penumpang #${i} ${i === 1 ? '(Kontak Utama Pemesan)' : ''}</span>
+                        <span class="text-[10px] text-gray-400">Data Wajib Sesuai KTP/Paspor</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Nama Lengkap *</label>
+                            <input type="text" id="pass-name-${i}" placeholder="Contoh: Budi Santoso" required class="w-full bg-dark-800 border border-gold/30 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-300 mb-1">No. WhatsApp / HP *</label>
+                            <input type="tel" id="pass-phone-${i}" placeholder="081234567890" required class="w-full bg-dark-800 border border-gold/30 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-300 mb-1">No. KTP / Paspor *</label>
+                            <input type="text" id="pass-ktp-${i}" placeholder="31710000000000" required class="w-full bg-dark-800 border border-gold/30 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold">
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-3">
+                            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Alamat Lengkap *</label>
+                            <input type="text" id="pass-address-${i}" placeholder="Jl. Sudirman No. 12, Jakarta" required class="w-full bg-dark-800 border border-gold/30 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+            updateSummaryData();
+        }
+
+        // STEP WIZARD NAVIGATION
+        function navigateToStep(step) {
+            currentStep = step;
+
+            // Hide all pages
+            document.getElementById('booking-page-1').classList.add('hidden');
+            document.getElementById('booking-page-2').classList.add('hidden');
+            document.getElementById('booking-page-3').classList.add('hidden');
+
+            // Reset indicators
+            for (let i = 1; i <= 3; i++) {
+                const ind = document.getElementById(`step-indicator-${i}`);
+                if (i === step) {
+                    ind.className = "cursor-pointer p-3 rounded-lg border transition flex flex-col md:flex-row items-center justify-center gap-2 border-gold bg-gold/10 text-gold font-bold";
+                } else {
+                    ind.className = "cursor-pointer p-3 rounded-lg border transition flex flex-col md:flex-row items-center justify-center gap-2 border-gold/20 text-gray-400 opacity-60";
+                }
+            }
+
+            // Show active page
+            document.getElementById(`booking-page-${step}`).classList.remove('hidden');
+            updateSummaryData();
+        }
+
+        function goToPage2() {
+            if (!selectedDestination) {
+                alert("Silakan pilih salah satu destinasi wisata terlebih dahulu.");
+                return;
+            }
+            navigateToStep(2);
+        }
+
+        function goToPage3() {
+            const deptDate = document.getElementById('input-date-dept').value;
+            const returnDate = document.getElementById('input-date-return').value;
+            
+            if (!deptDate || !returnDate) {
+                alert("Mohon lengkapi Tanggal Keberangkatan dan Tanggal Kepulangan.");
+                return;
+            }
+
+            const count = parseInt(document.getElementById('input-passengers-count').value) || 1;
+            for (let i = 1; i <= count; i++) {
+                const name = document.getElementById(`pass-name-${i}`).value;
+                const phone = document.getElementById(`pass-phone-${i}`).value;
+                if (!name || !phone) {
+                    alert(`Mohon isi Nama Lengkap dan No. Telepon untuk Penumpang #${i}`);
+                    return;
+                }
+            }
+
+            navigateToStep(3);
+        }
+
+        // UPDATE SUMMARY DISPLAY
+        function updateSummaryData() {
+            const count = parseInt(document.getElementById('input-passengers-count').value) || 1;
+            const deptDate = document.getElementById('input-date-dept').value || '-';
+            const returnDate = document.getElementById('input-date-return').value || '-';
+            const mainName = document.getElementById('pass-name-1')?.value || 'Belum diisi';
+
+            const total = selectedDestination ? (selectedDestination.price * count) : 0;
+
+            document.getElementById('summary-dest-name').textContent = selectedDestination ? selectedDestination.title : '-';
+            document.getElementById('summary-transport').textContent = selectedTransport;
+            document.getElementById('summary-dates').textContent = `${deptDate} s/d ${returnDate}`;
+            document.getElementById('summary-passengers-qty').textContent = `${count} Orang`;
+            document.getElementById('summary-main-contact').textContent = mainName;
+            document.getElementById('summary-total-price').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // PROCESS FINAL PAYMENT & CREATE ORDER
+        function processFinalPayment() {
+            const count = parseInt(document.getElementById('input-passengers-count').value) || 1;
+            const deptDate = document.getElementById('input-date-dept').value;
+            const returnDate = document.getElementById('input-date-return').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            const passengersList = [];
+            for (let i = 1; i <= count; i++) {
+                passengersList.push({
+                    name: document.getElementById(`pass-name-${i}`).value,
+                    phone: document.getElementById(`pass-phone-${i}`).value,
+                    ktp: document.getElementById(`pass-ktp-${i}`).value,
+                    address: document.getElementById(`pass-address-${i}`).value
+                });
+            }
+
+            const newOrder = {
+                id: 'AYR-' + Math.floor(10000 + Math.random() * 90000),
+                destination: selectedDestination.title,
+                category: selectedDestination.category,
+                transport: selectedTransport,
+                deptDate: deptDate,
+                returnDate: returnDate,
+                passengersCount: count,
+                passengersList: passengersList,
+                totalPrice: selectedDestination.price * count,
+                paymentMethod: paymentMethod,
+                status: 'Confirmed'
+            };
+
+            orders.unshift(newOrder);
+            localStorage.setItem('ayriz_orders_data', JSON.stringify(orders));
+
+            // Show E-Ticket Struk Modal immediately
+            openETicketModal(newOrder.id);
+            
+            // Render user orders tab & admin
+            renderOrdersCards();
+            renderAdminDashboard();
+        }
+
+        // RENDER USER ORDERS
+        function renderOrdersCards() {
+            const container = document.getElementById('orders-cards-list');
+            container.innerHTML = '';
+
+            if (orders.length === 0) {
+                container.innerHTML = `<div class="glass-panel p-12 text-center text-gray-500 rounded-xl">Belum ada struk bukti pemesanan tiket.</div>`;
+                return;
+            }
+
+            orders.forEach(order => {
+                const mainName = order.passengersList && order.passengersList[0] ? order.passengersList[0].name : '-';
+                const card = document.createElement('div');
+                card.className = "glass-panel p-6 rounded-xl border border-gold/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-gold transition";
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-xs text-gold font-bold bg-gold/10 px-2.5 py-0.5 rounded border border-gold/30">${order.id}</span>
+                            <span class="text-xs text-gray-400">${order.deptDate} s/d ${order.returnDate}</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mt-1">${order.destination}</h3>
+                        <p class="text-xs text-gray-300">Pemesan Utama: <span class="text-gold font-semibold">${mainName}</span> (${order.passengersCount} Penumpang)</p>
+                        <p class="text-xs text-gray-400">Transport: ${order.transport} | Metode: ${order.paymentMethod}</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto justify-between border-t md:border-t-0 border-gold/20 pt-3 md:pt-0">
+                        <div class="text-left md:text-right">
+                            <span class="text-[10px] text-gray-400 block uppercase">Total Biaya</span>
+                            <span class="font-bold text-gold text-lg">Rp ${order.totalPrice.toLocaleString('id-ID')}</span>
+                        </div>
+                        <button onclick="openETicketModal('${order.id}')" class="px-4 py-2 bg-gold text-black hover:bg-gold-light transition rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow">
+                            <i class="fa-solid fa-receipt"></i> Lihat Struk / E-Tiket
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // RENDER ADMIN DASHBOARD
+        function renderAdminDashboard() {
+            const tbody = document.getElementById('admin-orders-tbody');
+            tbody.innerHTML = '';
+
+            let totalRev = 0;
+            let totalPass = 0;
+
+            orders.forEach((order, index) => {
+                totalRev += order.totalPrice;
+                totalPass += parseInt(order.passengersCount);
+                const mainName = order.passengersList && order.passengersList[0] ? order.passengersList[0].name : '-';
+                const mainPhone = order.passengersList && order.passengersList[0] ? order.passengersList[0].phone : '-';
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gold/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono font-bold text-gold">${order.id}</td>
+                    <td class="p-4">
+                        <div class="font-bold text-white">${mainName}</div>
+                        <div class="text-[11px] text-gray-400">${mainPhone}</div>
+                    </td>
+                    <td class="p-4">
+                        <div class="text-white font-semibold">${order.destination}</div>
+                        <span class="text-[10px] text-gold bg-gold/10 px-2 py-0.5 rounded border border-gold/20">${order.transport}</span>
+                    </td>
+                    <td class="p-4 text-gray-300 text-xs">${order.deptDate}</td>
+                    <td class="p-4 font-bold text-white">${order.passengersCount} Orang</td>
+                    <td class="p-4 font-bold text-gold">Rp ${order.totalPrice.toLocaleString('id-ID')}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-green-950 text-green-400 border border-green-500/30">LUNAS</span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteAdminOrder(${index})" class="text-red-400 hover:text-red-300 p-2 rounded hover:bg-red-950/30 transition" title="Hapus Data">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-admin-orders').textContent = orders.length;
+            document.getElementById('stat-admin-passengers').textContent = totalPass;
+            document.getElementById('stat-admin-revenue').textContent = `Rp ${totalRev.toLocaleString('id-ID')}`;
+        }
+
+        function deleteAdminOrder(index) {
+            if (confirm("Apakah Anda yakin ingin menghapus data pemesanan ini?")) {
+                orders.splice(index, 1);
+                localStorage.setItem('ayriz_orders_data', JSON.stringify(orders));
+                renderAdminDashboard();
+                renderOrdersCards();
+            }
+        }
+
+        // NAVIGATE PAGES
+        function navigateToPage(page) {
+            document.getElementById('section-booking-wizard').classList.add('hidden');
+            document.getElementById('section-my-orders').classList.add('hidden');
+            document.getElementById('section-admin').classList.add('hidden');
+
+            if (page === 'booking') {
+                document.getElementById('section-booking-wizard').classList.remove('hidden');
+            } else if (page === 'my-orders') {
+                renderOrdersCards();
+                document.getElementById('section-my-orders').classList.remove('hidden');
+            } else if (page === 'admin') {
+                if (currentRole !== 'admin') {
+                    openLoginModal('admin');
+                    return;
+                }
+                renderAdminDashboard();
+                document.getElementById('section-admin').classList.remove('hidden');
+            }
+        }
+
+        // LOGIN & ROLE MODAL LOGIC
+        function openLoginModal(defaultRole = 'user') {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-modal').classList.add('flex');
+            switchModalRole(defaultRole);
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('flex');
+            document.getElementById('admin-pass-error').classList.add('hidden');
+        }
+
+        function switchModalRole(role) {
+            const userTab = document.getElementById('role-tab-user');
+            const adminTab = document.getElementById('role-tab-admin');
+            const userForm = document.getElementById('modal-form-user');
+            const adminForm = document.getElementById('modal-form-admin');
+
+            if (role === 'user') {
+                userTab.className = "flex-1 py-2 text-xs font-bold rounded-md transition text-black gold-gradient-bg";
+                adminTab.className = "flex-1 py-2 text-xs font-bold rounded-md transition text-gray-400";
+                userForm.classList.remove('hidden');
+                adminForm.classList.add('hidden');
+            } else {
+                adminTab.className = "flex-1 py-2 text-xs font-bold rounded-md transition text-black gold-gradient-bg";
+                userTab.className = "flex-1 py-2 text-xs font-bold rounded-md transition text-gray-400";
+                adminForm.classList.remove('hidden');
+                userForm.classList.add('hidden');
+            }
+        }
+
+        function loginAsUser() {
+            currentRole = 'user';
+            updateRoleUI();
+            closeLoginModal();
+            navigateToPage('booking');
+        }
+
+        function loginAsAdmin() {
+            const pass = document.getElementById('admin-pass-field').value;
+            // Admin password verification without displaying password hint anywhere in UI
+            if (pass === '1108') {
+                currentRole = 'admin';
+                updateRoleUI();
+                closeLoginModal();
+                navigateToPage('admin');
+                document.getElementById('admin-pass-field').value = '';
+            } else {
+                document.getElementById('admin-pass-error').classList.remove('hidden');
+            }
+        }
+
+        function updateRoleUI() {
+            const badge = document.getElementById('user-role-text');
+            const adminNavBtn = document.getElementById('nav-admin-btn');
+
+            if (currentRole === 'admin') {
+                badge.textContent = "Administrator Mode";
+                badge.className = "font-bold text-black bg-gold px-2 py-0.5 rounded text-xs";
+                adminNavBtn.classList.remove('hidden');
+            } else {
+                badge.textContent = "Pengguna";
+                badge.className = "font-semibold text-gold text-xs";
+                adminNavBtn.classList.add('hidden');
+            }
+        }
+
+        // OPEN E-TICKET STRUK MODAL
+        function openETicketModal(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            document.getElementById('ticket-code-display').textContent = order.id;
+            document.getElementById('ticket-dest-display').textContent = order.destination;
+            document.getElementById('ticket-category-badge').textContent = order.category;
+            document.getElementById('ticket-transport-display').textContent = order.transport;
+            document.getElementById('ticket-dept-date').textContent = order.deptDate;
+            document.getElementById('ticket-return-date').textContent = order.returnDate;
+            document.getElementById('ticket-payment-method').textContent = order.paymentMethod;
+            document.getElementById('ticket-total-price').textContent = `Rp ${order.totalPrice.toLocaleString('id-ID')}`;
+
+            const listContainer = document.getElementById('ticket-passengers-list');
+            listContainer.innerHTML = '';
+            order.passengersList.forEach(p => {
+                const li = document.createElement('li');
+                li.innerHTML = `${p.name} <span class="text-gray-500 font-normal">(No HP: ${p.phone} | KTP: ${p.ktp})</span>`;
+                listContainer.appendChild(li);
+            });
+
+            const modal = document.getElementById('e-ticket-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeETicketModal() {
+            const modal = document.getElementById('e-ticket-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
